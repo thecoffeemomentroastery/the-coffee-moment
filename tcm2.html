@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Coffee Moment Roastery</title>
+    <style>
+        :root {
+            --primary-color: #4a3f35; /* 深咖啡色 */
+            --bg-color: #fdfaf7;      /* 暖米色背景 */
+            --accent-color: #8c7851;  /* 烘焙金 */
+            --text-color: #333;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.8;
+            letter-spacing: 0.05em;
+        }
+
+        /* 顶部导航 */
+        nav {
+            padding: 1.5rem;
+            text-align: center;
+            position: absolute;
+            width: 100%;
+            z-index: 10;
+            background: rgba(0, 0, 0, 0.1); 
+        }
+
+        .logo {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #ffffff;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+
+        /* 英雄页 - 使用你提供的手绘插画图 */
+        header {
+            height: 90vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            /* 替换为你上传的手绘插画 */
+            background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), 
+                        url('https://files.catbox.moe/p9p4d0.png') center/cover no-repeat;
+            background-color: #f4eee8; 
+            color: #fff;
+            padding: 2rem;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.7);
+        }
+
+        header h1 { font-size: 2.8rem; margin-bottom: 0.5rem; }
+
+        section {
+            max-width: 800px;
+            margin: 5rem auto;
+            padding: 0 2rem;
+        }
+
+        h2 {
+            font-size: 1.6rem;
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        h2::after {
+            content: ''; display: block; width: 30px; height: 2px;
+            background: var(--accent-color); margin: 10px auto;
+        }
+
+        /* 插图样式 */
+        .content-img {
+            width: 100%;
+            height: auto;
+            margin: 2rem 0;
+            border-radius: 4px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        .philosophy-card {
+            background: #fff;
+            padding: 3rem;
+            border-radius: 2px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.02);
+            text-align: center;
+        }
+
+        /* 按钮样式 */
+        .btn-group {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            text-decoration: none;
+            padding: 12px 30px;
+            border-radius: 2px;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            color: #fff;
+        }
+
+        .btn:hover { transform: translateY(-2px); opacity: 0.9; }
+        .btn-ig { background: #c13584; }
+        .btn-wa { background: #25D366; }
+        .btn-map { background: var(--accent-color); }
+
+        footer {
+            padding: 3rem 2rem;
+            text-align: center;
+            background: #f4eee8;
+            font-size: 0.8rem;
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+
+    <nav><div class="logo">The Coffee Moment</div></nav>
+
+    <header>
+        <h1>The Coffee Moment Roastery</h1>
+        <p>为愿意慢下的人，保留一段属于咖啡的时间</p>
+    </header>
+
+    <section>
+        <p style="text-align: center;">我们相信，咖啡不只是提神的饮品，而是一种生活里的停顿点。<br>
+        一次注水的节奏、研磨声落下的瞬间、杯中温度刚刚好的那一刻——<br>
+        这些微小却真实的细节，构成了我们所说的 <strong>Coffee Moment</strong>。</p>
+        <img src="https://files.catbox.moe/k365f5.png" class="content-img" alt="Cafe Corner">
+    </section>
+
+    <section>
+        <h2>From Bean to Cup</h2>
+        <p>我们亲自挑选生豆，进行小批量烘焙。不追求夸张的风味，而是让豆子本身的个性被温柔地呈现——干净、平衡、有层次。每一批咖啡豆都经过反复测试，只为在杯中找到最适合它的状态。</p>
+        <img src="https://files.catbox.moe/8p516v.png" class="content-img" alt="Coffee Roasting Details">
+    </section>
+
+    <section>
+        <h2>A Space to Slow Down</h2>
+        <p>店内空间以简约与温暖为基调。没有刻意营造的热闹，我们更在意的是你坐下来的那一刻，是否能感到放松。这里适合一个人安静地思考，也适合三两好友低声交谈。</p>
+        <img src="https://files.catbox.moe/g2446h.png" class="content-img" alt="Atmosphere">
+    </section>
+
+    <section>
+        <div class="philosophy-card">
+            <h2>Our Philosophy</h2>
+            <p>我们不追求快速扩张，更在意长期。<br>
+               比起一次性的惊艳，我们更重视日复一日的稳定与真诚。<br><br>
+               <strong>认真对待咖啡，认真对待空间，认真对待每个人。</strong></p>
+        </div>
+    </section>
+
+    <section id="contact" style="background: #fff; padding: 4rem 2rem;">
+        <h2>Visit Us</h2>
+        <div style="text-align: center; margin-bottom: 2rem;">
+            <p><strong>Business Hours</strong></p>
+            <p>周一至周五 | 09:00 AM - 5:00 PM</p>
+            <p>周六与周日 | 11:00 AM - 5:00 PM</p>
+            <p>周六夜晚 | 08:00 PM - 12:00 AM</p>
+            <p style="color: #999; font-size: 0.8rem; margin-top: 10px;">( 周三周四休息 / Closed on Wednesday & Tuesday )</p>
+        </div>
+
+        <div style="text-align: center; margin-bottom: 2rem;">
+            <p><strong>Address</strong></p>
+            <p>The Coffee Moment Roastery</p>
+            <p style="font-size: 0.9rem; color: #666;">Kulai, Kelapa Sawit, Johor</p>
+        </div>
+
+        <div class="btn-group">
+            <a href="https://www.instagram.com/the_coffee_moment" class="btn btn-ig" target="_blank">📷 Instagram</a>
+            <a href="https://wa.me/601172984789" class="btn btn-wa" target="_blank">💬 WhatsApp Us</a>
+            <a href="https://maps.app.goo.gl/YourExactLink" class="btn btn-map" target="_blank">📍 Google Maps</a>
+        </div>
+    </section>
+
+    <footer>
+        <p>© 2024 The Coffee Moment Roastery | Kulai, Johor</p>
+    </footer>
+
+</body>
+</html>
