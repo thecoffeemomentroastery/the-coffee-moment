@@ -7,181 +7,140 @@
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=Inter:wght@200;400;600&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-light: #f5f3ef;  /* 基础暖灰 */
-            --bg-accent: #ece8e1; /* 分区深色 */
-            --text-main: #2c2c2c;
-            --accent-brown: #5d544c;
+            --bg-coffee: #edeae4; /* 咖啡区背景 */
+            --bg-story: #f5f5f5;  /* 故事区背景 */
+            --text-color: #2c2c2c;
             --serif: 'Cormorant Garamond', serif;
             --sans: 'Inter', sans-serif;
             --transition: all 0.8s cubic-bezier(0.2, 1, 0.3, 1);
         }
 
         * { box-sizing: border-box; }
-        body { 
-            margin: 0; background-color: var(--bg-light); color: var(--text-main); 
-            font-family: var(--sans); line-height: 1.8; overflow-x: hidden; 
-        }
+        body { margin: 0; color: var(--text-color); font-family: var(--sans); line-height: 1.8; overflow-x: hidden; }
+        
+        /* 全局背景质感 */
+        .page-wrapper { background-image: url('https://www.transparenttextures.com/patterns/pinstriped-suit.png'); }
 
         [data-lang="en"] { display: none; }
 
-        /* --- 全局立体感优化 --- */
-        .reveal { opacity: 0; transform: translateY(30px); transition: var(--transition); }
-        .reveal.visible { opacity: 1; transform: translateY(0); }
-
-        /* --- 导航栏：立体浮雕感 --- */
+        /* --- 导航：立体悬浮感 --- */
         nav {
-            padding: 35px 50px; display: flex; justify-content: space-between; align-items: center;
+            padding: 30px 50px; display: flex; justify-content: space-between; align-items: center;
             position: fixed; top: 0; width: 100%; z-index: 1000;
-            background: rgba(245, 243, 239, 0.85); backdrop-filter: blur(15px);
-            border-bottom: 1px solid rgba(0,0,0,0.03);
+            background: rgba(255,255,255,0.9); backdrop-filter: blur(10px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
         }
         .logo { 
-            font-family: var(--serif); font-size: 1.4rem; letter-spacing: 4px; font-weight: 600;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.05); /* 立体投影 */
+            font-family: var(--serif); font-size: 1.4rem; letter-spacing: 4px; font-weight: 600; 
+            text-shadow: 2px 2px 0px #fff, 4px 4px 10px rgba(0,0,0,0.1);
         }
-        .menu-trigger { 
-            cursor: pointer; text-transform: uppercase; letter-spacing: 2px; font-size: 0.75rem; font-weight: 600;
-            background: #fff; padding: 8px 20px; border-radius: 2px; box-shadow: 2px 2px 10px rgba(0,0,0,0.05);
-        }
+        .menu-trigger { cursor: pointer; text-transform: uppercase; letter-spacing: 2px; font-weight: 600; font-size: 0.75rem; }
 
         /* --- 侧边菜单 --- */
         .side-menu {
             position: fixed; top: 0; left: -100%; width: 400px; height: 100vh;
             background: #fff; z-index: 2000; transition: var(--transition); padding: 100px 60px;
-            box-shadow: 20px 0 80px rgba(0,0,0,0.05);
+            box-shadow: 20px 0 60px rgba(0,0,0,0.1);
         }
         .side-menu.active { left: 0; }
-        .menu-links a { 
-            display: block; font-family: var(--serif); font-size: 2.2rem; color: var(--text-main); 
-            text-decoration: none; margin-bottom: 30px; transition: 0.3s;
-        }
+        .menu-links a { display: block; font-family: var(--serif); font-size: 2.2rem; color: var(--text-color); text-decoration: none; margin-bottom: 30px; }
 
-        /* --- Hero Section --- */
-        header { padding: 220px 50px 100px; position: relative; max-width: 1400px; margin: 0 auto; }
+        /* --- Hero --- */
+        header { padding: 200px 50px 100px; max-width: 1400px; margin: 0 auto; position: relative; }
         .hero-title { 
-            font-family: var(--serif); font-size: clamp(2rem, 6vw, 4rem); line-height: 1.1; 
-            margin-bottom: 60px; position: relative; z-index: 2;
-            text-shadow: 0 10px 20px rgba(0,0,0,0.05);
+            font-family: var(--serif); font-size: clamp(2rem, 5vw, 3.5rem); line-height: 1.2;
+            text-shadow: 3px 3px 0px #fff, 6px 6px 15px rgba(0,0,0,0.08); 
         }
-        .hero-image { 
-            width: 100%; height: 75vh; background: url('logo_001.JPEG') center/cover no-repeat;
-            box-shadow: 0 50px 100px rgba(0,0,0,0.1); border-radius: 2px;
-        }
+        .hero-image { width: 100%; height: 75vh; background: url('logo_001.JPEG') center/cover no-repeat; box-shadow: 0 30px 60px rgba(0,0,0,0.15); margin-top: 50px; }
 
-        /* --- 分区：咖啡介绍区 (燕麦色背景) --- */
-        #beans-section { 
-            background-color: var(--bg-accent); 
-            padding: 150px 50px; position: relative; overflow: hidden;
-        }
-        /* 装饰背景字 */
+        /* --- 分区 1：豆单区 (几何背景) --- */
+        #beans-section { background-color: var(--bg-coffee); padding: 120px 50px; position: relative; }
         #beans-section::before {
-            content: "COLLECTION"; position: absolute; top: 50px; right: -50px;
-            font-family: var(--serif); font-size: 12rem; font-weight: 900; color: rgba(0,0,0,0.02); z-index: 0;
+            content: "COFFEE"; position: absolute; top: 0; left: 0; font-family: var(--serif);
+            font-size: 15rem; font-weight: 900; color: rgba(0,0,0,0.03); pointer-events: none;
         }
 
-        .section-tag { font-size: 0.7rem; letter-spacing: 4px; text-transform: uppercase; color: var(--accent-brown); margin-bottom: 20px; display: block; }
-        
-        /* 豆单网格优化 */
         .bean-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 40px; position: relative; z-index: 1; }
-        .bean-item { 
-            background: #fdfcfb; border-radius: 2px; overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.03); transition: var(--transition);
-        }
-        .bean-item:hover { transform: translateY(-15px); box-shadow: 0 40px 80px rgba(0,0,0,0.1); }
+        .bean-item { background: #fff; box-shadow: 0 10px 30px rgba(0,0,0,0.05); transition: var(--transition); overflow: hidden; }
+        .bean-item:hover { transform: translateY(-10px); box-shadow: 0 30px 60px rgba(0,0,0,0.1); }
         .bean-card { position: relative; width: 100%; padding-top: 130%; overflow: hidden; }
-        .bean-card img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; transition: 1.2s ease; }
-
-        /* 悬停弹窗层 */
+        .bean-card img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; }
+        
+        /* 风味弹窗 */
         .bean-overlay {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(44, 42, 39, 0.9); backdrop-filter: blur(10px);
             display: flex; flex-direction: column; justify-content: center; align-items: center;
-            padding: 40px; text-align: center; color: #fff; opacity: 0; transition: var(--transition);
+            padding: 30px; text-align: center; color: #fff; opacity: 0; transition: var(--transition);
         }
         .bean-item:hover .bean-overlay { opacity: 1; }
-        .overlay-title { font-family: var(--serif); font-size: 1.5rem; margin-bottom: 15px; }
-        .overlay-desc { font-size: 0.85rem; font-weight: 300; line-height: 1.8; border-top: 1px solid rgba(255,255,255,0.2); padding-top: 20px; }
+        .overlay-title { font-family: var(--serif); font-size: 1.4rem; margin-bottom: 10px; }
+        .overlay-desc { font-size: 0.85rem; border-top: 1px solid rgba(255,255,255,0.2); padding-top: 15px; }
 
-        /* --- 分区：空间与故事 (暖白色+网格线) --- */
-        #about-section { 
-            background-color: var(--bg-light); 
-            padding: 150px 50px; position: relative;
-            background-image: linear-gradient(rgba(0,0,0,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.03) 1px, transparent 1px);
-            background-size: 100px 100px;
-        }
-        .grid-row { display: grid; grid-template-columns: 1fr 1fr; gap: 100px; align-items: center; margin-bottom: 120px; }
-        .img-layer { position: relative; box-shadow: 30px 30px 0px rgba(93, 84, 76, 0.05); } /* 图片背后的几何色块层 */
-        .grid-row img { width: 100%; border-radius: 2px; display: block; }
+        .bean-footer-name { padding: 25px; text-align: center; font-family: var(--serif); font-size: 1.1rem; }
+
+        /* --- 分区 2：故事区 (灰色+立体标题) --- */
+        #story-section { background-color: var(--bg-story); padding: 120px 50px; }
+        .grid-row { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; margin-bottom: 100px; }
+        .grid-row img { width: 100%; box-shadow: 20px 20px 0px rgba(0,0,0,0.05); }
         
         h2 { 
-            font-family: var(--serif); font-size: 2.5rem; font-weight: 400; margin-bottom: 30px;
-            text-shadow: 2px 2px 0px #fff, 4px 4px 0px rgba(0,0,0,0.02); /* 立体字 */
+            font-family: var(--serif); font-size: 2.5rem; margin-bottom: 25px;
+            text-shadow: 2px 2px 0px #fff, 4px 4px 8px rgba(0,0,0,0.05);
         }
 
-        /* --- 理念卡片：深色对比层 --- */
+        /* --- 理念卡片 --- */
         .philosophy-card { 
-            background: #33312e; color: #fff; padding: 120px 80px; text-align: center;
-            margin: 100px 0; border-radius: 2px; position: relative;
-            box-shadow: 0 50px 100px rgba(0,0,0,0.15);
+            background: #fff; padding: 100px 60px; text-align: center; margin: 80px 0; 
+            border: 1px solid rgba(0,0,0,0.05); box-shadow: 0 20px 50px rgba(0,0,0,0.05);
         }
-        .philosophy-card h2 { text-shadow: none; border: none; }
-        .philosophy-card p { color: rgba(255,255,255,0.7); }
 
         /* --- 联系区 --- */
-        .contact-grid { background: #e8e6df; padding: 120px 50px; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 80px; }
-        .button { 
-            display: inline-block; margin-top: 20px; border-bottom: 2px solid var(--accent-brown); 
-            text-decoration: none; color: var(--text-main); font-size: 0.8rem; font-weight: 600; 
-            letter-spacing: 2px; padding-bottom: 5px; transition: 0.3s;
-        }
-        .button:hover { letter-spacing: 4px; }
+        .contact-grid { background: #e2e0d9; padding: 100px 50px; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 60px; }
+        .button { display: inline-block; margin-top: 15px; border-bottom: 1px solid #333; text-decoration: none; color: #333; font-size: 0.75rem; letter-spacing: 2px; margin-right: 20px; font-weight: 600; }
 
-        @media (max-width: 992px) {
-            .grid-row { grid-template-columns: 1fr; gap: 50px; }
-            .side-menu { width: 100%; }
-            #beans-section::before { display: none; }
-        }
+        .reveal { opacity: 0; transform: translateY(30px); transition: var(--transition); }
+        .reveal.visible { opacity: 1; transform: translateY(0); }
+
+        @media (max-width: 768px) { .grid-row { grid-template-columns: 1fr; } .side-menu { width: 100%; } }
     </style>
 </head>
 <body>
 
+<div class="page-wrapper">
     <div class="overlay-bg" id="overlay" onclick="toggleMenu()"></div>
-    
     <div class="side-menu" id="sideMenu">
-        <span style="position:absolute; top:40px; right:40px; cursor:pointer; font-size:1.5rem;" onclick="toggleMenu()">✕</span>
+        <span style="position:absolute; top:40px; right:40px; cursor:pointer;" onclick="toggleMenu()">✕</span>
         <div class="menu-links">
-            <a href="#about" onclick="toggleMenu()"><span data-lang="zh">品牌故事</span><span data-lang="en">Story</span></a>
-            <a href="#beans-section" onclick="toggleMenu()"><span data-lang="zh">精品豆单</span><span data-lang="en">Beans</span></a>
-            <a href="#roast" onclick="toggleMenu()"><span data-lang="zh">烘焙理念</span><span data-lang="en">Roastery</span></a>
-            <a href="#contact" onclick="toggleMenu()"><span data-lang="zh">联系我们</span><span data-lang="en">Contact</span></a>
+            <a href="#about" onclick="toggleMenu()"><span data-lang="zh">故事</span><span data-lang="en">Story</span></a>
+            <a href="#beans-section" onclick="toggleMenu()"><span data-lang="zh">豆单</span><span data-lang="en">Collection</span></a>
+            <a href="#contact" onclick="toggleMenu()"><span data-lang="zh">联系</span><span data-lang="en">Contact</span></a>
         </div>
     </div>
 
     <nav id="navbar">
-        <div class="menu-trigger" onclick="toggleMenu()">Explore</div>
+        <div class="menu-trigger" onclick="toggleMenu()">Menu</div>
         <div class="logo">The Coffee Moment</div>
         <div class="lang-toggle" onclick="toggleLanguage()" style="cursor:pointer; font-weight:600;">ZH / EN</div>
     </nav>
 
     <header class="reveal">
-        <span class="section-tag">Since 2024</span>
-        <h1 class="hero-title" data-lang="zh">为愿意慢下的人，<br>保留一段属于咖啡的时间。</h1>
+        <h1 class="hero-title" data-lang="zh">为愿意慢下的人，保留一段属于咖啡的时间。</h1>
         <h1 class="hero-title" data-lang="en">Preserving a moment for coffee.</h1>
         <div class="hero-image"></div>
     </header>
 
     <section id="beans-section">
         <div class="reveal">
-            <span class="section-tag">Selection</span>
-            <h2 data-lang="zh">当前豆单</h2><h2 data-lang="en">Current Collection</h2>
+            <h2 data-lang="zh">当前豆单</h2><h2 data-lang="en">Current Offerings</h2>
             <div class="bean-grid">
                 <div class="bean-item">
                     <div class="bean-card">
                         <img src="ethiopia_sidama.png" alt="Sidama">
                         <div class="bean-overlay">
                             <div class="overlay-title">Sidama Bona</div>
-                            <div class="overlay-desc" data-lang="zh">水洗。青柠皮、佛手柑、樱草与杏子。清爽且带有精致花香。</div>
-                            <div class="overlay-desc" data-lang="en">Washed. Floral and clean notes of Lime and Apricot.</div>
+                            <div class="overlay-desc" data-lang="zh">风味：青柠皮、佛手柑、樱草、杏子。口感清爽精致。</div>
+                            <div class="overlay-desc" data-lang="en">Notes: Lime zest, Bergamot, Primrose, Apricot. Floral and clean.</div>
                         </div>
                     </div>
                     <div class="bean-footer-name">Ethiopia Sidama Bona</div>
@@ -191,7 +150,8 @@
                         <img src="costa_rica.png" alt="Costa Rica">
                         <div class="bean-overlay">
                             <div class="overlay-title">Tarrazú V&G</div>
-                            <div class="overlay-desc" data-lang="zh">慢速日晒。梅酒、西拉子红酒、金葡萄干与莓果。</div>
+                            <div class="overlay-desc" data-lang="zh">风味：梅酒、西拉子红酒、金葡萄干、莓果。浓郁微醺。</div>
+                            <div class="overlay-desc" data-lang="en">Notes: Umeshu, Shiraz, Raisin, Berries. Deep and winey.</div>
                         </div>
                     </div>
                     <div class="bean-footer-name">Costa Rica Tarrazú</div>
@@ -201,7 +161,8 @@
                         <img src="ethiopia_guji.png" alt="Guji">
                         <div class="bean-overlay">
                             <div class="overlay-title">Hambella</div>
-                            <div class="overlay-desc" data-lang="zh">日晒。花香爆炸、混合莓果、干杏子。绿茶余韵。</div>
+                            <div class="overlay-desc" data-lang="zh">风味：莓果爆炸、干杏子。绿茶清甜尾韵。</div>
+                            <div class="overlay-desc" data-lang="en">Notes: Mixed Berries, Dried Apricot, Green Tea finish.</div>
                         </div>
                     </div>
                     <div class="bean-footer-name">Ethiopia Guji Hambella</div>
@@ -210,26 +171,25 @@
         </div>
     </section>
 
-    <section id="about-section">
+    <section id="story-section">
         <div id="about" class="reveal">
             <div class="grid-row">
                 <div>
-                    <span class="section-tag">Origin</span>
-                    <h2 data-lang="zh">关于我们</h2><h2 data-lang="en">About Us</h2>
-                    <p data-lang="zh">我们相信，咖啡不只是提神的饮品，而是一种生活里的停顿点。一次注水的节奏、研磨声落下的瞬间、这些微小却真实的细节，构构成我们所说的 Coffee Moment。</p>
+                    <h2 data-lang="zh">关于我们</h2><h2 data-lang="en">Our Story</h2>
+                    <p data-lang="zh">咖啡不只是提神的饮品，而是一种生活里的停顿点。一次注水的节奏、研磨声落下的瞬间、这些细节构成了 Coffee Moment。</p>
+                    <p data-lang="en">Coffee is more than a drink; it's a pause. These details define a 'Coffee Moment'.</p>
                 </div>
-                <div class="img-layer"><img src="indoor.png" alt="Interior"></div>
+                <img src="indoor.png" alt="Interior">
             </div>
         </div>
 
         <div id="roast" class="reveal">
             <div class="grid-row" style="direction: rtl;">
                 <div style="direction: ltr;">
-                    <span class="section-tag">Roast</span>
-                    <h2 data-lang="zh">从生豆到杯中</h2><h2 data-lang="en">Roastery</h2>
-                    <p data-lang="zh">我们亲自挑选生豆，进行小批量烘焙。不追求夸张的风味，而是让豆子本身的个性被温柔地呈现——干净、平衡、有层次。</p>
+                    <h2 data-lang="zh">从生豆到杯中</h2><h2 data-lang="en">Craftsmanship</h2>
+                    <p data-lang="zh">我们亲自挑选生豆，进行小批量烘焙。不追求夸张的风味，而是让豆子本身的个性被温柔地呈现——干净、平衡、有层次。每一批咖啡豆都经过反复测试，只为找到最适合它的状态。</p>
                 </div>
-                <div class="img-layer"><img src="beans.png" alt="Craft"></div>
+                <img src="beans.png" alt="Craft">
             </div>
         </div>
     </section>
@@ -244,40 +204,41 @@
     <div class="contact-grid" id="contact">
         <div>
             <h3 data-lang="zh">营业时间</h3>
-            <p data-lang="zh">周一至周五 | 09:00 - 17:00<br>周六与周日 | 11:00 - 17:00<br>周六夜晚 | 20:00 - 00:00<br><small>( 周三周四休息 )</small></p>
+            <p data-lang="zh">周一至周五 | 09:00 - 17:00<br>周六与周日 | 11:00 - 17:00<br>周六夜晚 | 20:00 - 00:00<br>周三周四休息</p>
         </div>
         <div>
             <h3 data-lang="zh">到访空间</h3>
             <p>Kelapa Sawit, Kulai, Johor</p>
-            <a href="#" class="button">Google Maps</a>
-            <a href="https://wa.me/601172984789" class="button">WhatsApp</a>
+            <a href="https://maps.app.goo.gl/fNzh1RstH9px1zHg9?g_st=ic，你把它添加进去，然后我添加多这四只豆子的介绍图，你把它们都加进豆子介绍的板块" class="button" target="_blank">Google Maps</a>
+            <a href="https://wa.me/601172984789" class="button" target="_blank">WhatsApp</a>
         </div>
         <div>
             <h3 data-lang="zh">关注社交</h3>
-            <a href="https://www.instagram.com/the_coffee_moment" class="button">Instagram</a>
+            <a href="https://www.instagram.com/the_coffee_moment" class="button" target="_blank">Instagram</a>
         </div>
     </div>
 
-    <footer style="padding: 60px; text-align: center; font-size: 0.7rem; opacity: 0.4; letter-spacing: 2px;">
+    <footer style="padding: 60px; text-align: center; font-size: 0.6rem; opacity: 0.3; letter-spacing: 2px;">
         © 2024 THE COFFEE MOMENT ROASTERY
     </footer>
+</div>
 
-    <script>
-        function toggleLanguage() {
-            const isZh = document.documentElement.lang === 'zh-CN';
-            document.documentElement.lang = isZh ? 'en' : 'zh-CN';
-            const lang = isZh ? 'en' : 'zh';
-            document.querySelectorAll('[data-lang="zh"]').forEach(el => el.style.display = lang === 'zh' ? 'block' : 'none');
-            document.querySelectorAll('[data-lang="en"]').forEach(el => el.style.display = lang === 'en' ? 'block' : 'none');
-        }
-        function toggleMenu() {
-            document.getElementById('sideMenu').classList.toggle('active');
-            document.getElementById('overlay').classList.toggle('active');
-        }
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
-        }, { threshold: 0.1 });
-        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-    </script>
+<script>
+    function toggleLanguage() {
+        const isZh = document.documentElement.lang === 'zh-CN';
+        document.documentElement.lang = isZh ? 'en' : 'zh-CN';
+        const lang = isZh ? 'en' : 'zh';
+        document.querySelectorAll('[data-lang="zh"]').forEach(el => el.style.display = lang === 'zh' ? 'block' : 'none');
+        document.querySelectorAll('[data-lang="en"]').forEach(el => el.style.display = lang === 'en' ? 'block' : 'none');
+    }
+    function toggleMenu() {
+        document.getElementById('sideMenu').classList.toggle('active');
+        document.getElementById('overlay').classList.toggle('active');
+    }
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
 </body>
 </html>
