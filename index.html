@@ -34,16 +34,66 @@
         }
         .menu-trigger { cursor: pointer; text-transform: uppercase; letter-spacing: 3px; font-size: 0.75rem; font-weight: 600; border-bottom: 2px solid var(--text-main); }
 
-        /* --- 侧边菜单 --- */
+       /* --- 侧边菜单：增强层次感版本 --- */
         .side-menu {
-            position: fixed; top: 0; left: -100%; width: 400px; height: 100vh;
-            background: #fff; z-index: 2000; transition: var(--transition); padding: 100px 60px;
+            position: fixed; top: 0; left: -100%; width: 450px; height: 100vh;
+            background: #fff; z-index: 2000; transition: var(--transition); 
+            padding: 120px 60px;
+            display: flex; flex-direction: column;
+            box-shadow: 40px 0 100px rgba(0,0,0,0.1); /* 侧向深度阴影 */
         }
-        .side-menu.active { left: 0; }
-        .menu-links a { display: block; font-family: var(--serif); font-size: 2.5rem; color: var(--text-main); text-decoration: none; margin-bottom: 35px; }
-        .overlay-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.1); z-index: 1999; display: none; backdrop-filter: blur(5px); }
-        .overlay-bg.active { display: block; }
+        
+        /* 侧边菜单内部的几何装饰层 */
+        .side-menu::after {
+            content: "MENU"; position: absolute; bottom: 20px; right: -20px;
+            font-family: var(--serif); font-size: 8rem; font-weight: 900;
+            color: rgba(0,0,0,0.03); transform: rotate(-90deg); transform-origin: bottom right;
+            pointer-events: none;
+        }
 
+        .side-menu.active { left: 0; }
+
+        .menu-links { position: relative; z-index: 2; }
+
+        .menu-links a { 
+            display: flex; align-items: baseline;
+            font-family: var(--serif); font-size: 2.8rem; color: var(--text-main); 
+            text-decoration: none; margin-bottom: 40px; 
+            transition: all 0.4s ease;
+            position: relative;
+            text-shadow: 0 0 0px rgba(0,0,0,0); /* 初始无投影 */
+        }
+
+        /* 增加数字层次层 (01, 02...) */
+        .menu-links a::before {
+            content: attr(data-num);
+            font-family: var(--sans); font-size: 0.8rem; font-weight: 600;
+            margin-right: 20px; color: #ccc; letter-spacing: 2px;
+            transition: 0.4s;
+        }
+
+        /* 悬停时的立体弹出效果 */
+        .menu-links a:hover { 
+            transform: translateX(15px);
+            color: #8d857d; /* 稍微变色增加对比 */
+            text-shadow: 2px 2px 0px #fff, 8px 8px 20px rgba(0,0,0,0.1); 
+        }
+
+        .menu-links a:hover::before {
+            color: var(--text-main);
+            transform: scale(1.2);
+        }
+
+        /* 关闭按钮的立体感 */
+        .close-btn {
+            position: absolute; top: 40px; right: 40px; 
+            cursor: pointer; font-size: 1.2rem; font-weight: 200;
+            width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;
+            border: 1px solid #eee; border-radius: 50%;
+            transition: 0.3s;
+        }
+        .close-btn:hover { background: #f9f9f9; transform: rotate(90deg); }
+        
         /* --- Header / Hero --- */
         header { padding: 220px 50px 100px; max-width: 1400px; margin: 0 auto; position: relative; }
         .hero-title { 
@@ -284,5 +334,6 @@
     </script>
 </body>
 </html>
+
 
 
