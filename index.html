@@ -4,312 +4,250 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Coffee Moment Roastery</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Inter:wght@200;300;400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Inter:wght@100;300;400&display=swap" rel="stylesheet">
     <style>
         :root {
-            /* 调色板：纸张色、炭黑、浅木灰 */
-            --bg-paper: #F7F7F5; 
-            --bg-white: #ffffff;
-            --text-main: #1A1A1A;
-            --text-light: #888888;
+            --bg: #F9F8F6; /* 更接近浅色木材的米白 */
+            --accent: #1A1A1A;
+            --text-muted: #7A7A7A;
             --serif: 'Cormorant Garamond', serif;
             --sans: 'Inter', sans-serif;
-            --transition: all 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+            --ease: cubic-bezier(0.23, 1, 0.32, 1);
         }
 
         * { box-sizing: border-box; -webkit-font-smoothing: antialiased; }
-        
         body { 
-            margin: 0; 
-            color: var(--text-main); 
-            font-family: var(--sans); 
-            line-height: 1.7; 
-            overflow-x: hidden; 
-            background-color: var(--bg-paper); 
+            margin: 0; background: var(--bg); color: var(--accent); 
+            font-family: var(--sans); overflow-x: hidden; line-height: 1.6;
         }
 
+        /* 统一双语显示：不再粗暴隐藏，而是让排版共存或优雅切换 */
         [data-lang="en"] { display: none; }
+        .lang-active-en [data-lang="en"] { display: block; }
+        .lang-active-en [data-lang="zh"] { display: none; }
 
-        /* --- Navigation --- */
+        /* --- 极简导航 --- */
         nav {
-            padding: 40px 6%; 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center;
-            position: fixed; 
-            top: 0; 
-            width: 100%; 
-            z-index: 1000;
-            transition: var(--transition);
+            position: fixed; top: 0; width: 100%; padding: 40px 6%;
+            display: flex; justify-content: space-between; align-items: center;
+            z-index: 1000; mix-blend-mode: difference; color: white; /* 随着背景颜色自动反色 */
         }
-        
-        .logo { 
-            font-family: var(--serif); 
-            font-size: 1.1rem; 
-            letter-spacing: 6px; 
-            text-transform: uppercase; 
-            font-weight: 400; 
-        }
-        
-        .menu-trigger { 
-            cursor: pointer; 
-            text-transform: uppercase; 
-            letter-spacing: 3px; 
-            font-size: 0.7rem; 
-            border-bottom: 1px solid var(--text-main); 
-            padding-bottom: 4px;
-        }
+        .logo { font-family: var(--serif); font-size: 1.2rem; letter-spacing: 0.4em; text-transform: uppercase; font-weight: 300; }
+        .nav-right { display: flex; align-items: center; gap: 40px; }
+        .menu-btn { cursor: pointer; font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; border-bottom: 1px solid currentColor; padding-bottom: 4px; }
 
-        .lang-toggle {
-            letter-spacing: 2px;
-            font-size: 0.7rem;
-            opacity: 0.6;
-        }
-
-        /* --- Side Menu (Full Screen) --- */
+        /* --- 全屏菜单 --- */
         .side-menu {
-            position: fixed; top: 0; left: -100%; width: 100%; height: 100vh;
-            background: var(--bg-paper); z-index: 2000; transition: var(--transition); 
-            padding: 15vh 10%; display: flex; flex-direction: column;
+            position: fixed; top: 0; right: -100%; width: 100%; height: 100vh;
+            background: #fff; z-index: 2000; transition: transform 0.8s var(--ease);
+            display: flex; align-items: center; justify-content: center;
         }
-        .side-menu.active { left: 0; }
+        .side-menu.active { transform: translateX(-100%); }
         .menu-links a { 
-            display: block; font-family: var(--serif); font-size: clamp(2.5rem, 8vw, 4rem); 
-            color: var(--text-main); text-decoration: none; margin-bottom: 20px; 
-            font-style: italic; transition: 0.4s;
+            display: block; font-family: var(--serif); font-size: 12vh; color: var(--accent);
+            text-decoration: none; font-style: italic; transition: 0.3s; line-height: 1.1;
         }
-        .menu-links a:hover { opacity: 0.4; padding-left: 20px; }
-        .close-btn { position: absolute; top: 45px; right: 6%; cursor: pointer; font-size: 1.5rem; font-weight: 200; }
-        
-        /* --- Header / Hero --- */
-        header { padding: 25vh 6% 10vh; max-width: 1600px; margin: 0 auto; }
-        .hero-meta { font-size: 0.7rem; letter-spacing: 4px; text-transform: uppercase; opacity: 0.5; display: block; margin-bottom: 20px; }
-        .hero-title { 
-            font-family: var(--serif); 
-            font-size: clamp(2.2rem, 6vw, 4.5rem); 
-            line-height: 1.1; 
-            margin-bottom: 80px; 
-            font-weight: 300; 
-            letter-spacing: -0.02em;
+        .menu-links a:hover { opacity: 0.3; padding-left: 30px; }
+        .close-menu { position: absolute; top: 40px; right: 6%; cursor: pointer; font-size: 2rem; font-weight: 100; }
+
+        /* --- 英雄视觉区 (Hero Section) --- */
+        .hero { height: 100vh; display: flex; align-items: center; justify-content: center; padding: 0 6%; position: relative; }
+        .hero-text { z-index: 2; text-align: center; }
+        .hero-text h1 { 
+            font-family: var(--serif); font-size: clamp(2.5rem, 8vw, 6rem); 
+            font-weight: 300; line-height: 1; letter-spacing: -0.03em;
         }
-        .hero-title em { font-style: italic; font-family: var(--serif); }
-        
-        .hero-image { 
-            width: 100%; 
-            height: 85vh; 
-            background: url('logo_001.JPEG') center/cover no-repeat; 
-            background-color: #eee;
-            filter: contrast(92%) brightness(98%);
+        .hero-text em { font-style: italic; }
+        .hero-bg { 
+            position: absolute; top: 15%; right: 6%; width: 40%; height: 70%; 
+            background: url('logo_001.JPEG') center/cover no-repeat;
+            opacity: 0.9; z-index: 1; filter: grayscale(20%);
         }
 
-        /* --- Beans Section --- */
-        #beans-section { background-color: var(--bg-white); padding: 160px 6%; }
-        .section-header { 
-            font-family: var(--serif); font-size: clamp(1.8rem, 4vw, 2.8rem); 
-            margin-bottom: 80px; font-weight: 300; text-align: center; font-style: italic;
-        }
-        .bean-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 80px 40px; }
-        .bean-item { transition: var(--transition); }
-        .bean-card { position: relative; width: 100%; padding-top: 135%; overflow: hidden; background: var(--bg-paper); }
-        .bean-card img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; transition: transform 2s ease; }
-        .bean-item:hover img { transform: scale(1.08); }
-        
-        .bean-overlay {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(247, 247, 245, 0.95); display: flex; flex-direction: column; 
-            justify-content: center; padding: 40px; opacity: 0; transition: 0.6s;
-        }
-        .bean-item:hover .bean-overlay { opacity: 1; }
-        .overlay-title { font-family: var(--serif); font-size: 1.6rem; margin-bottom: 15px; font-weight: 400; }
-        .overlay-desc { font-size: 0.8rem; color: var(--text-light); letter-spacing: 1px; line-height: 2; }
-        
-        .bean-footer-name { 
-            padding: 25px 0; text-align: left; font-family: var(--sans); 
-            font-size: 0.75rem; letter-spacing: 2px; text-transform: uppercase; font-weight: 400;
-        }
+        /* --- 内容区域通用 --- */
+        section { padding: 160px 6%; }
 
-        /* --- Story Section --- */
-        #story-section { padding: 160px 6%; background-color: var(--bg-paper); }
-        .grid-row { display: grid; grid-template-columns: 1fr 1.2fr; gap: 100px; align-items: center; margin-bottom: 180px; }
-        .img-wrap { overflow: hidden; width: 100%; }
-        .grid-row img { width: 100%; transition: transform 2s ease; display: block; }
-        .grid-row:hover img { transform: scale(1.03); }
+        /* --- 豆单 (Beans) - 采用画廊错位排版 --- */
+        .section-label { font-size: 0.7rem; letter-spacing: 0.4em; text-transform: uppercase; opacity: 0.4; margin-bottom: 40px; display: block; }
         
-        .story-content { max-width: 450px; }
-        .story-content h2 { font-family: var(--serif); font-size: 2.5rem; margin-bottom: 30px; font-weight: 300; font-style: italic; }
-        .story-content p { font-size: 0.9rem; color: var(--text-light); margin-bottom: 30px; }
+        .bean-container { display: flex; flex-wrap: wrap; gap: 100px 4%; }
+        .bean-item { width: 48%; position: relative; }
+        .bean-item:nth-child(even) { margin-top: 150px; } /* 错位效果 */
         
-        /* --- Contact --- */
-        .contact-grid { 
-            background: #EAE8E3; padding: 120px 6%; 
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 80px; 
-        }
-        .contact-grid h3 { font-family: var(--serif); font-size: 1.1rem; letter-spacing: 3px; margin-bottom: 40px; text-transform: uppercase; font-weight: 400; }
-        .contact-grid p { font-size: 0.85rem; color: #555; line-height: 2; }
-        .button { 
-            display: inline-block; margin-top: 30px; border-bottom: 1px solid var(--text-main); 
-            text-decoration: none; color: var(--text-main); font-size: 0.7rem; 
-            letter-spacing: 2px; padding-bottom: 5px; margin-right: 40px; text-transform: uppercase;
-        }
+        .bean-img-box { width: 100%; padding-top: 130%; overflow: hidden; background: #eee; position: relative; }
+        .bean-img-box img { position: absolute; top: 0; width: 100%; height: 100%; object-fit: cover; transition: transform 2s var(--ease); }
+        .bean-item:hover img { transform: scale(1.05); }
 
-        /* --- Reveal Animation --- */
-        .reveal { opacity: 0; transform: translateY(40px); transition: var(--transition); }
-        .reveal.visible { opacity: 1; transform: translateY(0); }
+        .bean-info { margin-top: 30px; }
+        .bean-name { font-family: var(--serif); font-size: 2rem; margin: 0; font-weight: 400; }
+        .bean-meta { font-size: 0.8rem; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; margin-top: 10px; }
+        .bean-desc { margin-top: 20px; font-size: 0.9rem; max-width: 80%; border-top: 1px solid #ddd; padding-top: 20px; }
 
-        @media (max-width: 992px) { 
-            .grid-row { grid-template-columns: 1fr; gap: 50px; } 
-            header { padding-top: 180px; }
-            .hero-title { font-size: 2.5rem; }
+        /* --- 故事 (Story) --- */
+        .story-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10%; align-items: start; }
+        .story-img { width: 100%; height: 80vh; object-fit: cover; }
+        .story-content { padding-top: 100px; }
+        .story-content h2 { font-family: var(--serif); font-size: 3.5rem; font-weight: 300; font-style: italic; }
+
+        /* --- 联系 (Contact) --- */
+        .footer-grid { border-top: 1px solid #ddd; padding-top: 100px; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 60px; }
+        .footer-col h4 { font-size: 0.7rem; letter-spacing: 0.3em; text-transform: uppercase; margin-bottom: 30px; }
+        .footer-col p { font-size: 0.9rem; color: var(--accent); white-space: pre-line; }
+        .footer-link { display: inline-block; margin-top: 20px; text-decoration: none; color: var(--accent); border-bottom: 1px solid var(--accent); padding-bottom: 4px; font-size: 0.8rem; margin-right: 20px; }
+
+        /* --- 动画 --- */
+        .reveal { opacity: 0; transform: translateY(50px); transition: 1.5s var(--ease); }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+
+        @media (max-width: 768px) {
+            .bean-item { width: 100%; }
+            .bean-item:nth-child(even) { margin-top: 0; }
+            .story-grid { grid-template-columns: 1fr; }
+            .footer-grid { grid-template-columns: 1fr; }
+            .hero-bg { width: 80%; left: 10%; top: 20%; height: 50%; }
         }
     </style>
 </head>
-<body>
+<body id="body">
 
-    <nav id="navbar">
-        <div class="menu-trigger" onclick="toggleMenu()">Menu</div>
+    <nav>
         <div class="logo">The Coffee Moment</div>
-        <div class="lang-toggle" onclick="toggleLanguage()" style="cursor:pointer;">ZH / EN</div>
+        <div class="nav-right">
+            <div class="lang-toggle menu-btn" onclick="toggleLang()">ZH / EN</div>
+            <div class="menu-btn" onclick="toggleMenu()">Menu</div>
+        </div>
     </nav>
 
     <div class="side-menu" id="sideMenu">
-        <div class="close-btn" onclick="toggleMenu()">✕</div>
+        <div class="close-menu" onclick="toggleMenu()">✕</div>
         <div class="menu-links">
-            <a href="#about" onclick="toggleMenu()"><span data-lang="zh">关于我们</span><span data-lang="en">Our Story</span></a>
-            <a href="#beans-section" onclick="toggleMenu()"><span data-lang="zh">精品豆单</span><span data-lang="en">Coffee Selection</span></a>
-            <a href="#contact" onclick="toggleMenu()"><span data-lang="zh">联系与到访</span><span data-lang="en">Visit Us</span></a>
+            <a href="#beans" onclick="toggleMenu()">Coffee</a><br>
+            <a href="#story" onclick="toggleMenu()">About</a><br>
+            <a href="#contact" onclick="toggleMenu()">Contact</a>
         </div>
     </div>
 
-    <header class="reveal">
-        <span class="hero-meta">Kulai, Johor / Roastery</span>
-        <h1 class="hero-title" data-lang="zh">专注烘焙，<br>记录每一刻风味的<em>流动</em>。</h1>
-        <h1 class="hero-title" data-lang="en">Precision Roasting,<br>Capturing the <em>Moment</em> of Flavor.</h1>
-        <div class="hero-image"></div>
-    </header>
+    <main>
+        <section class="hero">
+            <div class="hero-text reveal">
+                <h1 data-lang="zh">专注，<br>记录每一刻风味的<em>流动</em>。</h1>
+                <h1 data-lang="en">Focusing on the<br><em>Flow</em> of flavor.</h1>
+            </div>
+            <div class="hero-bg"></div>
+        </section>
 
-    <section id="beans-section">
-        <div class="reveal">
-            <h2 class="section-header" data-lang="zh">当前豆单</h2>
-            <h2 class="section-header" data-lang="en">Coffee Beans</h2>
-            <div class="bean-grid">
-                <div class="bean-item">
-                    <div class="bean-card">
-                        <img src="costarica_tarrazu.png" alt="Costa Rica">
-                        <div class="bean-overlay">
-                            <div class="overlay-title">Tarrazú</div>
-                            <div class="overlay-desc" data-lang="zh">Costa Rica / 水洗<br>风味：柑橘、红苹果、榛子、巧克力</div>
-                            <div class="overlay-desc" data-lang="en">Costa Rica / Washed<br>Notes: Citrus, Red Apple, Hazelnut</div>
+        <section id="beans">
+            <span class="section-label">Selected Coffee</span>
+            <div class="bean-container">
+                <div class="bean-item reveal">
+                    <div class="bean-img-box"><img src="kenya_nyeri.png" alt="Kenya"></div>
+                    <div class="bean-info">
+                        <p class="bean-meta">Kenya / Nyeri PB / Washed</p>
+                        <h3 class="bean-name">Kenya Nyeri PB</h3>
+                        <div class="bean-desc">
+                            <span data-lang="zh">黑李子、青苹果、葡萄柚、枫糖</span>
+                            <span data-lang="en">Black Plum, Green Apple, Grapefruit, Maple Syrup</span>
                         </div>
                     </div>
-                    <div class="bean-footer-name">Costa Rica Tarrazú</div>
                 </div>
-                <div class="bean-item">
-                    <div class="bean-card">
-                        <img src="kenya_nyeri.png" alt="Kenya">
-                        <div class="bean-overlay">
-                            <div class="overlay-title">Nyeri PB</div>
-                            <div class="overlay-desc" data-lang="zh">Kenya / 水洗<br>风味：黑李子、青苹果、葡萄柚、枫糖</div>
-                            <div class="overlay-desc" data-lang="en">Kenya / Washed<br>Notes: Black Plum, Grapefruit, Maple</div>
+
+                <div class="bean-item reveal">
+                    <div class="bean-img-box"><img src="ethiopia_sidamo.png" alt="Ethiopia"></div>
+                    <div class="bean-info">
+                        <p class="bean-meta">Ethiopia / Bensa / Natural</p>
+                        <h3 class="bean-name">Sidamo Bensa</h3>
+                        <div class="bean-desc">
+                            <span data-lang="zh">柑橘香、柠檬、桃子、伯爵茶</span>
+                            <span data-lang="en">Orange Blossom, Lemon, Peach, Earl Grey</span>
                         </div>
                     </div>
-                    <div class="bean-footer-name">Kenya Nyeri PB</div>
                 </div>
-                <div class="bean-item">
-                    <div class="bean-card">
-                        <img src="ethiopia_sidamo.png" alt="Sidamo">
-                        <div class="bean-overlay">
-                            <div class="overlay-title">Bensa</div>
-                            <div class="overlay-desc" data-lang="zh">Ethiopia / 日晒<br>风味：柑橘香、柠檬、桃子、伯爵茶</div>
-                            <div class="overlay-desc" data-lang="en">Ethiopia / Natural<br>Notes: Orange, Peach, Earl Grey</div>
+
+                <div class="bean-item reveal">
+                    <div class="bean-img-box"><img src="costarica_tarrazu.png" alt="Costa Rica"></div>
+                    <div class="bean-info">
+                        <p class="bean-meta">Costa Rica / Tarrazú / Washed</p>
+                        <h3 class="bean-name">Tarrazú</h3>
+                        <div class="bean-desc">
+                            <span data-lang="zh">柑橘、红苹果、榛子、巧克力</span>
+                            <span data-lang="en">Citrusy, red apple, hazelnuts, chocolate</span>
                         </div>
                     </div>
-                    <div class="bean-footer-name">Ethiopia Sidamo Bensa</div>
+                </div>
+
+                <div class="bean-item reveal">
+                    <div class="bean-img-box"><img src="panama.png" alt="Geisha"></div>
+                    <div class="bean-info">
+                        <p class="bean-meta">Panama / Wild Forest / Washed</p>
+                        <h3 class="bean-name">Geisha</h3>
+                        <div class="bean-desc">
+                            <span data-lang="zh">百合花、柑橘、桃子、白葡萄</span>
+                            <span data-lang="en">Lily, Orange, Peach, White Grape</span>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <section id="story-section">
-        <div id="about" class="reveal">
-            <div class="grid-row">
-                <div class="story-content">
-                    <h2 data-lang="zh">关于烘豆</h2><h2 data-lang="en">The Roastery</h2>
-                    <p data-lang="zh">在柔佛古来的木质空间里，我们专注于小批量精品咖啡烘焙。每一颗豆子都经过精细的风味调试，只为呈现最干净的产区特征。</p>
-                    <p data-lang="en">Based in a minimalist wood-toned space in Kulai, we focus on small-batch roasting to ensure every bean reaches its full potential.</p>
+        <section id="story">
+            <div class="story-grid">
+                <img src="indoor.png" class="story-img reveal" alt="Space">
+                <div class="story-content reveal">
+                    <span class="section-label">Our Philosophy</span>
+                    <h2 data-lang="zh">在木质的暖意中<br>探索平衡</h2>
+                    <h2 data-lang="en">Balance in<br>Warm Wood</h2>
+                    <p data-lang="zh">位于柔佛古来，所有的咖啡豆均由我们自家进行小批量烘焙。我们追求平衡且具辨识度的风味。通过对每一批生豆的精准控制，呈现出不同产区应有的地域特性。</p>
+                    <p data-lang="en">Located in Kulai, Johor. We seek balanced and distinct flavors. Through precise control, we highlight the unique terroir of each origin.</p>
                 </div>
-                <div class="img-wrap"><img src="indoor.png" alt="Space"></div>
             </div>
-        </div>
+        </section>
 
-        <div class="reveal">
-            <div class="grid-row" style="direction: rtl;">
-                <div class="story-content" style="direction: ltr;">
-                    <h2 data-lang="zh">烘焙理念</h2><h2 data-lang="en">Philosophy</h2>
-                    <p data-lang="zh">平衡，是我们追求的核心。不刻意追求极端的酸或苦，而是寻找甜感与芳香之间的那个黄金瞬间。</p>
-                    <p data-lang="en">Balance is our core pursuit. We seek the golden intersection between sweetness and aroma, honoring the origin of each bean.</p>
+        <section id="contact">
+            <div class="footer-grid reveal">
+                <div class="footer-col">
+                    <h4>Visit Us</h4>
+                    <p>Kelapa Sawit, Kulai, Johor</p>
+                    <a href="https://wa.me/601172984789" class="footer-link">WhatsApp</a>
+                    <a href="https://www.instagram.com/the_coffee_moment" class="footer-link">Instagram</a>
                 </div>
-                <div class="img-wrap"><img src="beans.png" alt="Roast"></div>
+                <div class="footer-col">
+                    <h4>Hours</h4>
+                    <p data-lang="zh">周一至周五 | 10:00 - 17:00
+                    周六与周日 | 11:00 - 17:00
+                    周六深夜 | 20:00 - 00:00
+                    ( 周三周四休息 )</p>
+                    <p data-lang="en">Mon-Fri: 10:00-17:00
+                    Sat-Sun: 11:00-17:00
+                    Sat Night: 20:00-00:00
+                    Closed: Wed & Thu</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Roastery</h4>
+                    <p>© 2024 THE COFFEE MOMENT<br>All beans roasted in-house.</p>
+                </div>
             </div>
-        </div>
-    </section>
-
-    <div class="contact-grid" id="contact">
-        <div>
-            <h3 data-lang="zh">营业时间</h3><h3 data-lang="en">Hours</h3>
-            <p data-lang="zh">周一至周五 | 10:00 - 17:00<br>周六与周日 | 11:00 - 17:00<br>周六深夜 | 20:00 - 00:00<br>( 周三周四休息 )</p>
-            <p data-lang="en">Mon-Fri: 10am-5pm / Sat-Sun: 11am-5pm / Sat Late: 8pm-12am / Closed: Wed & Thu</p>
-        </div>
-        <div>
-            <h3 data-lang="zh">位置</h3><h3 data-lang="en">Location</h3>
-            <p>Kelapa Sawit, Kulai, Johor</p>
-            <div style="margin-top: 10px;">
-                <a href="https://wa.me/601172984789" class="button">WhatsApp</a>
-                <a href="https://www.instagram.com/the_coffee_moment" class="button">Instagram</a>
-            </div>
-        </div>
-    </div>
-
-    <footer style="padding: 100px 6%; text-align: left; font-size: 0.6rem; opacity: 0.3; letter-spacing: 3px;">
-        © 2024 THE COFFEE MOMENT ROASTERY. ALL RIGHTS RESERVED.
-    </footer>
+        </section>
+    </main>
 
     <script>
-        // 语言切换逻辑
-        function toggleLanguage() {
-            const isZh = document.documentElement.lang === 'zh-CN';
-            document.documentElement.lang = isZh ? 'en' : 'zh-CN';
-            const lang = isZh ? 'en' : 'zh';
-            document.querySelectorAll('[data-lang="zh"]').forEach(el => el.style.display = lang === 'zh' ? 'block' : 'none');
-            document.querySelectorAll('[data-lang="en"]').forEach(el => el.style.display = lang === 'en' ? 'block' : 'none');
-        }
-
-        // 菜单切换
+        // 菜单开关
         function toggleMenu() {
             document.getElementById('sideMenu').classList.toggle('active');
         }
 
-        // 滚动揭示动画
+        // 语言切换
+        function toggleLang() {
+            document.body.classList.toggle('lang-active-en');
+        }
+
+        // 滚动揭示
         const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => { 
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                } 
+            entries.forEach(entry => {
+                if (entry.isIntersecting) entry.target.classList.add('active');
             });
         }, { threshold: 0.1 });
 
         document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-
-        // 导航栏背景随滚动变化（可选）
-        window.addEventListener('scroll', () => {
-            const nav = document.getElementById('navbar');
-            if (window.scrollY > 50) {
-                nav.style.background = 'rgba(247, 247, 245, 0.9)';
-                nav.style.backdropFilter = 'blur(10px)';
-            } else {
-                nav.style.background = 'transparent';
-                nav.style.backdropFilter = 'none';
-            }
-        });
     </script>
 </body>
 </html>
